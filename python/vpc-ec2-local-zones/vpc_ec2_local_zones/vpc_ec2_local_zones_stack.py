@@ -10,7 +10,7 @@ from aws_cdk import (
 from constructs import Construct
 
 # Local Zone to be used
-LZ_NAME = "us-east-1-atl-1a"
+LZ_NAME = "af-south-1-los-1a"
 # VPC CIDR that will be used to create a new VPC
 VPC_CIDR = "172.31.100.0/24"
 # Subnet size of the subnets in the Local Zone
@@ -54,7 +54,7 @@ class VpcEc2LocalZonesStack(Stack):
         nat = ec2.Instance(self, "NATInstanceInLZ",
                  vpc=vpc,
                  security_group=self.create_nat_SG(vpc),
-                 instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
+                 instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.XLARGE),
                  machine_image=amzn_linux,
                  user_data=ec2.UserData.custom(user_data),
                  vpc_subnets=ec2.SubnetSelection(availability_zones=[LZ_NAME], subnet_type=ec2.SubnetType.PUBLIC),
@@ -129,7 +129,7 @@ class VpcEc2LocalZonesStack(Stack):
         user_data = self.get_user_data("db_mysql")
         db = ec2.Instance(self, "DBInLZ",
                  vpc=vpc,
-                 instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
+                 instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.XLARGE),
                  machine_image=amzn_linux,
                  user_data=ec2.UserData.custom(user_data),
                  vpc_subnets=ec2.SubnetSelection(availability_zones=[LZ_NAME],subnet_type=ec2.SubnetType.PRIVATE_ISOLATED),
@@ -148,7 +148,7 @@ class VpcEc2LocalZonesStack(Stack):
         wp_as = autoscaling.AutoScalingGroup(self,
                 "WordPressAS",
                 vpc=vpc,
-                instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
+                instance_type=ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.XLARGE),
                 machine_image=amzn_linux,
                 user_data=ec2.UserData.custom(user_data),
                 vpc_subnets=ec2.SubnetSelection(availability_zones=[LZ_NAME],
